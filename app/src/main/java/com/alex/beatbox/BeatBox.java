@@ -18,6 +18,8 @@ public class BeatBox {
     private List<Sound> mSounds = new ArrayList<>();
     private AssetManager mAssets;
     private SoundPool mSoundPool;
+    int streamId;
+    float speedRate;
 
     public BeatBox (Context context) {
         mAssets = context.getAssets();
@@ -55,13 +57,25 @@ public class BeatBox {
     public List<Sound> getSounds(){
         return mSounds;
     }
-    public void play(Sound sound) {
+
+
+    public void play(Sound sound, float speed) {
         Integer soundId = sound.getSoundId();
+        speedRate = speed;
         if (soundId == null) {
             return;
         }
-        mSoundPool.play(soundId, 1.0f, 1.0f, 1, 0, 1.0f);
+       streamId = mSoundPool.play(soundId, 1.0f, 1.0f, 1, 0, speedRate);
+
     }
+
+
+    public void changeSpeed(float speed){
+        speedRate = speed;
+        mSoundPool.setRate(streamId, speedRate);
+    }
+
+
     public void release() {
         mSoundPool.release();
     }
